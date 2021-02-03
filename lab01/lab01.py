@@ -22,7 +22,11 @@ def captured_output():
 
 # implement this function
 def is_perfect(n):
-    pass
+    sum = 0
+    for i in range(1, n):
+        if n%i == 0:
+            sum+=i
+    return sum == n
 
 # (3 points)
 def test1():
@@ -40,7 +44,11 @@ def test1():
 
 # implement this function
 def multiples_of_3_and_5(n):
-    pass
+    sum = 0
+    for i in range(1,n):
+      if i%3 == 0 or i%5 == 0:
+        sum+=i
+    return sum
 
 # (3 points)
 def test2():
@@ -53,7 +61,12 @@ def test2():
 # EXERCISE 3
 #################################################################################
 def integer_right_triangles(p):
-    pass
+    tris = 0
+    for a in range(1, p):
+        for b in range(1, p):
+          if (a**2 + b**2 == (p-(a+b))**2) and (a + b + (p-(a+b)) == p) and (a <= b) and (b<(p-(a+b))):
+              tris += 1
+    return tris
 
 def test3():
     tc = unittest.TestCase()
@@ -67,7 +80,22 @@ def test3():
 
 # implement this function
 def gen_pattern(chars):
-    pass
+    #first half of ascii
+    for a in range(1,len(chars)+1):
+      lastpart= (chars[len(chars)-a:])
+      frontpart =(chars[len(chars)-a+1:])
+      frontpart = frontpart[::-1]
+      dotmaker = '.'.join(frontpart+lastpart)
+      centerer= dotmaker.center((len(chars)*4) - 3, '.')
+      print(centerer)
+    #second half of ascii
+    for b in range(len(chars)-1,0,-1):
+      lastpart= (chars[len(chars)-b:])
+      frontpart =(chars[len(chars)-b+1:])
+      frontpart = frontpart[::-1]
+      dotmaker = '.'.join(frontpart+lastpart)
+      centerer = dotmaker.center((len(chars)*4) - 3, '.')
+      print(centerer)
 
 def test4():
     tc = unittest.TestCase()
