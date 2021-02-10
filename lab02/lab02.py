@@ -4,7 +4,7 @@ import urllib.request
 
 ROMEO_SOLILOQUY = """
         But, soft! what light through yonder window breaks?
-        It is the east, and Juliet is the sun.
+        It is the east, and Juliet is the sun.a
         Arise, fair sun, and kill the envious moon,
         who is already sick and pale with grief,
         That thou her maid art far more fair than she:
