@@ -93,7 +93,21 @@ def test1_2():
 ################################################################################
 # Implement this function
 def gen_passage(ngram_dict, length=100):
-    pass
+    passage = []
+    key = random.choice(sorted(ngram_dict.keys()))
+    passage.append(key)
+    lengthofpass = len(passage)
+    while(lengthofpass <= length):
+        randtup = list(random.choice(ngram_dict[key]))
+        passage.extend(randtup)
+        if randtup[len(randtup)-1] in ngram_dict.keys():
+          key = randtup[len(randtup)-1]
+        else:
+            key = random.choice(sorted(ngram_dict.keys()))
+            passage.append(key)
+    passage = passage[:length]
+    finishedprod = " ".join(list1)
+    return finishedprod   
 
 # 50 Points
 def test2():
