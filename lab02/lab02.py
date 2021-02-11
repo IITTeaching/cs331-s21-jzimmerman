@@ -4,7 +4,7 @@ import urllib.request
 
 ROMEO_SOLILOQUY = """
         But, soft! what light through yonder window breaks?
-        It is the east, and Juliet is the sun.
+        It is the east, and Juliet is the sun.a
         Arise, fair sun, and kill the envious moon,
         who is already sick and pale with grief,
         That thou her maid art far more fair than she:
@@ -34,7 +34,13 @@ ROMEO_SOLILOQUY = """
 # Implement this function
 def compute_ngrams(toks, n=2):
     """Returns an n-gram dictionary based on the provided list of tokens."""
-    pass
+    dict = {}
+    for i in range(len(toks)-(n-1)):
+      if toks[i] in dict:
+        dict[toks[i]].append(tuple(toks[i+1:n+i]))
+      else:
+        dict[toks[i]] = [tuple(toks[i+1:n+i])]
+    return dict
 
 def test1():
     test1_1()
@@ -93,7 +99,21 @@ def test1_2():
 ################################################################################
 # Implement this function
 def gen_passage(ngram_dict, length=100):
-    pass
+    passage = []
+    key = random.choice(sorted(ngram_dict.keys()))
+    passage.append(key)
+    lengthofpass = len(passage)
+    while(lengthofpass <= length):
+        randtup = list(random.choice(ngram_dict[key]))
+        passage.extend(randtup)
+        if randtup[len(randtup)-1] in ngram_dict.keys():
+          key = randtup[len(randtup)-1]
+        else:
+            key = random.choice(sorted(ngram_dict.keys()))
+            passage.append(key)
+    passage = passage[:length]
+    finishedprod = " ".join(list1)
+    return finishedprod   
 
 # 50 Points
 def test2():
