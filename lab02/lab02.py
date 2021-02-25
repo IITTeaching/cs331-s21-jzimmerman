@@ -102,18 +102,18 @@ def gen_passage(ngram_dict, length=100):
     passage = []
     key = random.choice(sorted(ngram_dict.keys()))
     passage.append(key)
-    lengthofpass = len(passage)
-    while(lengthofpass <= length):
+    while(len(passage) <= length):
         randtup = list(random.choice(ngram_dict[key]))
         passage.extend(randtup)
         if randtup[len(randtup)-1] in ngram_dict.keys():
-          key = randtup[len(randtup)-1]
+            key = randtup[len(randtup)-1]
         else:
             key = random.choice(sorted(ngram_dict.keys()))
             passage.append(key)
     passage = passage[:length]
-    finishedprod = " ".join(list1)
+    finishedprod = " ".join(passage)
     return finishedprod   
+   
 
 # 50 Points
 def test2():
