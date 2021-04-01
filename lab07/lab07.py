@@ -13,24 +13,53 @@ class ExtensibleHashTable:
         self.nitems = 0
 
     def find_bucket(self, key):
+        pass
         # BEGIN_SOLUTION
         # END_SOLUTION
 
     def __getitem__(self,  key):
-        # BEGIN_SOLUTION
-        # END_SOLUTION
+        new = key % self.n_buckets
+        if self.buckets[new] == None:
+            raise KeyError
+        for x in self.buckets[new]:
+            if x[0] == key:
+                return x[1]
+        raise KeyError
 
     def __setitem__(self, key, value):
-        # BEGIN_SOLUTION
-        # END_SOLUTION
+        new = key % self.n_buckets
+        if self.buckets[new] == None:
+            self.buckets[new] = [[key,value]]
+            self.nitems += 1
+        else:
+            for x in self.buckets[new]:
+                if x[0] == key:
+                    x[1] = value
+                    return new
+            self.buckets[new].append([key,value])
+            self.nitems += 1
+        if self.nitems > self.n_buckets * self.fillfactor:
+            items = list(self.items())
+            self.n_buckets *= 2
+            self.buckets = [None] * self.n_buckets
+            self.nitems = 0
+            for k, v in items:
+                self.__setitem__(k,v)
+            
 
     def __delitem__(self, key):
-        # BEGIN SOLUTION
-        # END SOLUTION
+        new = key % self.n_buckets
+        if self.buckets[new] == None:
+            raise KeyError
+        vall = self.buckets[new]
+        for i in range(len(vall)):
+            if vall[i][0] == key:
+                del vall[i]
+                self.nitems -= 1
 
     def __contains__(self, key):
         try:
-            _ = self[key]
+            tacos = self[key]
             return True
         except:
             return False
@@ -42,20 +71,25 @@ class ExtensibleHashTable:
         return self.__len__() != 0
 
     def __iter__(self):
-        ### BEGIN SOLUTION
-        ### END SOLUTION
+        for bucket in self.buckets:
+            if bucket != None:
+                for pair in bucket:
+                    yield pair[0]
 
     def keys(self):
         return iter(self)
 
     def values(self):
-        ### BEGIN SOLUTION
-        ### END SOLUTION
+        for bucket in self.buckets:
+            if bucket != None:
+                for pair in bucket:
+                    yield pair[1]
 
     def items(self):
-        ### BEGIN SOLUTION
-        ### END SOLUTION
-
+        for bucket in self.buckets:
+            if bucket != None:
+                for pair in bucket:
+                    yield (pair[0], pair[1])
     def __str__(self):
         return '{ ' + ', '.join(str(k) + ': ' + str(v) for k, v in self.items()) + ' }'
 
@@ -108,7 +142,6 @@ def test_iteration():
 
     for k, v in entries:
         h[k] = v
-
     for k, v in entries:
         tc.assertEqual(h[k], v)
 
