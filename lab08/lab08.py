@@ -23,12 +23,32 @@ class Heap:
         return idx*2+2
 
     def heapify(self, idx=0):
-        ### BEGIN SOLUTION
-        ### END SOLUTION
+        stop = True
+        while stop:
+            top = idx
+            right = self._right(idx)
+            left = self._left(idx)
+            length = len(self.data)
+            if left < length and self.key(self.data[left]) > self.key(self.data[top]):
+                top = left
+            if right < length and self.key(self.data[right]) > self.key(self.data[top]):
+                top = right
+            if top != idx:
+                self.data[idx], self.data[top] = self.data[top], self.data[idx]
+                idx = top
+            else:
+                stop = False
 
     def add(self, x):
-        ### BEGIN SOLUTION
-        ### END SOLUTION
+        self.data.append(x)
+        indx = len(self.data) - 1
+        stop = True
+        while indx != 0 and stop:
+            if self.key(self.data[self._parent(indx)]) < self.key(self.data[indx]):
+                self.data[self._parent(indx)], self.data[indx] = self.data[indx], self.data[self._parent(indx)]
+                indx = self._parent(indx)
+            else:
+                stop = False
 
     def peek(self):
         return self.data[0]
@@ -129,8 +149,28 @@ def test_key_heap_5():
 # 2. MEDIAN
 ################################################################################
 def running_medians(iterable):
-    ### BEGIN SOLUTION
-    ### END SOLUTION
+    mnheap = Heap(key = lambda x: -x)
+    mxheap = Heap()
+    m = iterable[0]
+    r = []
+    for a, b in enumerate(iterable):
+        if b <= m:
+            mxheap.add(b)
+        else:
+            mnheap.add(b)
+        if len(mxheap) - len(mnheap) > 1:
+            mnheap.add(mxheap.pop())
+        elif len(mnheap) - len(mxheap) > 1:
+            mxheap.add(mnheap.pop())
+        if a % 2 == 1:
+            m = (mnheap.peek() + mxheap.peek()) / 2
+            r.append(m)
+        else:
+            m = mnheap.peek() if len(mnheap) > len(mxheap) else mxheap.peek()
+            r.append(m)
+    return r
+   
+    
 
 ################################################################################
 # TESTS
@@ -173,8 +213,15 @@ def test_median_3():
 # 3. TOP-K
 ################################################################################
 def topk(items, k, keyf):
-    ### BEGIN SOLUTION
-    ### END SOLUTION
+    h = Heap(key = lambda x: -1 * keyf(x))
+    for item in items:
+        if len(h) < k:
+            h.add(item)
+        else:
+            if keyf(item) > keyf(h.peek()):
+                h.pop()
+                h.add(item)
+    return list(iter(h))[::-1]
 
 ################################################################################
 # TESTS
